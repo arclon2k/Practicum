@@ -1,0 +1,48 @@
+{
+  "title": "Pilili Elbise",
+  "code": "123456",
+  "description": "<p>Şık pilili midi elbise.</p>",
+  "category": "Elbiseler",
+  "materials": ["Pamuk", "Elastan"],
+  "breadcrumbs": [
+    {"label": "Kadın"},
+    {"label": "Elbiseler"}
+  ],
+  "articles": [
+    {
+      "code": "123456001",
+      "color": "Siyah",
+      "size": "36",
+      "price": {"value": 399.99},
+      "compareAt": {"value": 499.99},
+      "inStock": true,
+      "ean": "1234567890123",
+      "gallery": [
+        {"url": "https://image.hm.com/assets/hm/123456001.jpg"},
+        {"url": "https://image.hm.com/assets/hm/123456001-2.jpg"}
+      ]
+    },
+    {
+      "code": "123456002",
+      "color": "Siyah",
+      "size": "38",
+      "price": {"value": 399.99},
+      "inStock": false
+    },
+    {
+      "code": "123456101",
+      "color": "Kırmızı",
+      "size": "36",
+      "price": {"value": 449.99},
+      "inStock": true,
+      "gallery": [
+        {"url": "https://image.hm.com/assets/hm/123456101.jpg"}
+      ]
+    }
+  ],
+  "gallery": [
+    {"url": "https://image.hm.com/assets/hm/123456001.jpg", "color": "Siyah"},
+    {"url": "https://image.hm.com/assets/hm/123456001-2.jpg", "color": "Siyah"},
+    {"url": "https://image.hm.com/assets/hm/123456101.jpg", "color": "Kırmızı"}
+  ]
+}
