@@ -13,7 +13,13 @@ from typing import Iterable
 from urllib.parse import urljoin, urlparse
 
 import httpx
-from playwright.async_api import Browser, BrowserContext, Page, async_playwright
+from playwright.async_api import (
+    Browser,
+    BrowserContext,
+    Page,
+    TimeoutError as PlaywrightTimeoutError,
+    async_playwright,
+)
 
 from .models import Product
 from .parser import merge_colorway_products, parse_product_json
@@ -147,7 +153,27 @@ class HMTRCrawler:
             await self._throttle()
             LOGGER.info("Loading category", extra={"url": category_url})
             await page.goto(category_url, wait_until="networkidle")
-            product_links = await self._extract_product_links(page)
+            product_selector = "a[href*='/productpage.']"
+            found = False
+            for attempt in range(5):
+                try:
+                    await page.wait_for_selector(product_selector, timeout=4000)
+                    found = True
+                    break
+                except PlaywrightTimeoutError:
+                    LOGGER.debug(
+                        "Product anchors not visible yet; scrolling",
+                        extra={"url": category_url, "attempt": attempt + 1},
+                    )
+                    await page.evaluate("window.scrollBy(0, document.body.scrollHeight)")
+                    await page.wait_for_timeout(1000)
+            if not found:
+                LOGGER.warning(
+                    "No product anchors discovered before timeout", extra={"url": category_url}
+                )
+                product_links: list[str] = []
+            else:
+                product_links = await self._extract_product_links(page)
             LOGGER.info("Discovered products", extra={"url": category_url, "count": len(product_links)})
             limited_links = product_links[: self.max_products] if self.max_products else product_links
             for link in limited_links:
